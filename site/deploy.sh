@@ -21,7 +21,7 @@ if [ "$(basename "$SCRIPT_DIR")" != "site" ]; then
 fi
 
 # ── Guard: .vercel/project.json must reference kim-swap ──
-VERCEL_PROJECT='{"projectId":"prj_KIM","orgId":"team_mj1804"}'
+VERCEL_PROJECT='{"projectId":"prj_XubKZDrRmne8J1N8REbqUHSbyRr8","orgId":"team_nA2Bclnvd1gcjtNbIdFjpApP"}'
 if [ -f ".vercel/project.json" ]; then
   if ! grep -q "kim" .vercel/project.json 2>/dev/null; then
     echo "WARNING: .vercel/project.json may point to wrong project."

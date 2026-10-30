@@ -51,14 +51,11 @@ function getNextBroadcast() {
 }
 
 function buildTickerHTML() {
-  // Build enough items to fill the screen (double for seamless loop)
-  let html = '';
-  const count = Math.max(8, Math.ceil(window.innerWidth / 400) + 2);
-  for (let i = 0; i < count; i++) {
-    const b = BROADCASTS[(broadcastIndex + i) % BROADCASTS.length];
-    html += `<div class="ticker-item"><span class="ticker-time">${b.time}</span> ${b.text}</div>`;
-  }
-  return html;
+  // Duplicate all broadcasts for seamless CSS loop (translateX 0→-50%)
+  const all = [...BROADCASTS, ...BROADCASTS];
+  return all.map(b =>
+    `<div class="ticker-item"><span class="ticker-time">${b.time}</span> ${b.text}</div>`
+  ).join('');
 }
 
 function initBroadcast() {

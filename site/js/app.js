@@ -31,27 +31,26 @@
     const p = getFeaturedPetition();
     if (!p) { el.style.display = 'none'; return; }
 
-    const usdNum = parseFloat(p.amountUsd.replace(/[$,M]/g, '').replace('B', '000000000').replace('M', '000000'));
     const progress = Math.min(100, (p.boosts / 10) * 100);
 
     el.innerHTML = `
-      <div class="petition-card-header">
-        <span class="petition-number">VICTIM CLAIM #${p.id}</span>
-        <span class="petition-status ${p.status}">${getStatusLabel(p.status)}</span>
+      <div class="pet-card-top">
+        <span class="pet-number">VICTIM CLAIM #${p.id}</span>
+        <span class="pet-status ${p.status}">${getStatusLabel(p.status)}</span>
       </div>
-      <div class="petition-event">★ ${p.event} ★</div>
-      <p class="petition-story">"${p.story}"</p>
-      <div class="petition-meta">
+      <div class="pet-event">★ ${p.event} ★</div>
+      <p class="pet-story">"${p.story}"</p>
+      <div class="pet-meta">
         <div><strong>${p.name}</strong><br>Filed by</div>
         <div><strong>${p.amount}</strong><br>Amount Lost</div>
         <div><strong>${p.chain}</strong><br>Chain</div>
         <div><strong>${p.boosts} boosts</strong><br>Community Support</div>
       </div>
-      <div class="petition-boost-bar">
-        <div class="petition-boost-fill" style="width: ${progress}%"></div>
+      <div class="pet-boost-bar">
+        <div class="pet-boost-fill" style="width: ${progress}%"></div>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-        <span style="font-size:13px;color:var(--muted-2)">Progress to FEATURED: ${p.boosts}/10 boosts</span>
+      <div class="pet-boost-actions">
+        <span>Progress to FEATURED: ${p.boosts}/10 boosts</span>
         <button class="button button-red boost-btn" data-id="${p.id}">BOOST WITH $KIM</button>
       </div>
     `;
@@ -66,27 +65,28 @@
   let visibleCount = 9;
   function renderPetitionGrid() {
     const grid = document.getElementById('petition-grid');
-    const sorted = getSortedPetitions().filter(p => p.id !== getFeaturedPetition()?.id);
+    const featured = getFeaturedPetition();
+    const sorted = getSortedPetitions().filter(p => p.id !== featured?.id);
     const visible = sorted.slice(0, visibleCount);
 
     grid.innerHTML = visible.map(p => {
       const progress = Math.min(100, (p.boosts / 10) * 100);
       return `
       <div class="petition-card" data-id="${p.id}" role="button" tabindex="0" aria-label="View petition ${p.id}">
-        <div class="petition-card-header">
-          <span class="petition-number">VICTIM CLAIM #${p.id}</span>
-          <span class="petition-status ${p.status}">${getStatusLabel(p.status)}</span>
+        <div class="pet-card-top">
+          <span class="pet-number">VICTIM CLAIM #${p.id}</span>
+          <span class="pet-status ${p.status}">${getStatusLabel(p.status)}</span>
         </div>
-        <div class="petition-event">${p.event}</div>
-        <p class="petition-story">"${p.story}"</p>
-        <div class="petition-meta">
+        <div class="pet-event">${p.event}</div>
+        <p class="pet-story">"${p.story}"</p>
+        <div class="pet-meta">
           <div><strong>${p.name}</strong><br>Filed by</div>
           <div><strong>${p.amount}</strong><br>Amount Lost</div>
         </div>
-        <div class="petition-boost-bar">
-          <div class="petition-boost-fill" style="width: ${progress}%"></div>
+        <div class="pet-boost-bar">
+          <div class="pet-boost-fill" style="width: ${progress}%"></div>
         </div>
-        <div class="petition-boost-info">
+        <div class="pet-boost-info">
           <span><strong>${p.boosts}</strong> boosts</span>
           <span>${progress >= 100 ? 'FEATURED' : progress >= 30 ? 'BOOSTED' : ''}</span>
         </div>
@@ -94,13 +94,11 @@
     `;
     }).join('');
 
-    // Card click → detail
     grid.querySelectorAll('.petition-card').forEach(card => {
       card.addEventListener('click', () => openPetitionModal(card.dataset.id));
       card.addEventListener('keydown', e => { if (e.key === 'Enter') openPetitionModal(card.dataset.id); });
     });
 
-    // Show/hide load more
     const loadMore = document.getElementById('load-more');
     if (sorted.length > visibleCount) {
       loadMore.style.display = 'block';
@@ -132,7 +130,7 @@
         <div class="detail-meta-item"><label>USD VALUE</label><span>${p.amountUsd}</span></div>
         <div class="detail-meta-item"><label>CHAIN</label><span>${p.chain}</span></div>
         ${p.wallet ? `<div class="detail-meta-item"><label>WALLET</label><span style="font-size:12px;font-family:monospace">${p.wallet}</span></div>` : ''}
-        <div class="detail-meta-item"><label>STATUS</label><span class="petition-status ${p.status}">${getStatusLabel(p.status)}</span></div>
+        <div class="detail-meta-item"><label>STATUS</label><span class="pet-status ${p.status}">${getStatusLabel(p.status)}</span></div>
       </div>
       <div class="detail-boost-section">
         <div class="detail-boost-header">
@@ -157,7 +155,7 @@
           Share on X
         </a>
         <button class="share-btn" id="copy-link-btn">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5m4-14l9 9m0 0h-4m4 0v4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5m4-14l9 9m0 0h-4m4 0v4"/></svg>
           Copy Link
         </button>
       </div>
@@ -172,7 +170,9 @@
       navigator.clipboard.writeText(window.location.href + '?petition=' + id).catch(() => {});
       const btn = content.querySelector('#copy-link-btn');
       btn.textContent = 'Copied!';
-      setTimeout(() => { btn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5m4-14l9 9m0 0h-4m4 0v4"/></svg> Copy Link`; }, 1500);
+      setTimeout(() => {
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5m4-14l9 9m0 0h-4m4 0v4"/></svg> Copy Link`;
+      }, 1500);
     });
 
     modal.hidden = false;
@@ -203,17 +203,15 @@
         </div>
         <h2 style="font-family:var(--font-head);font-size:24px;letter-spacing:2px;text-align:center;margin-bottom:4px">BOOST THIS PETITION</h2>
         <p style="text-align:center;font-size:14px;color:var(--muted);margin-bottom:24px">Victim Claim #${p.id} — ${p.event}</p>
-
         <div class="boost-wallet-info">
           <span>Your $KIM Balance</span>
           <strong>${wallet.balance.toLocaleString()} $KIM</strong>
         </div>
-
         <div class="boost-input-group">
           <label>Amount of $KIM to spend</label>
           <div class="boost-input-row">
             <input type="number" id="boost-amount" value="100" min="1" max="${wallet.balance}" placeholder="100">
-            <span style="color:var(--muted);padding:14px 0;font-size:18px">$KIM</span>
+            <span>$KIM</span>
           </div>
           <div class="boost-presets">
             <button class="boost-preset" data-amount="50">50</button>
@@ -222,26 +220,18 @@
             <button class="boost-preset" data-amount="500">500</button>
           </div>
         </div>
-
-        <div class="boost-impact" id="boost-impact">
+        <div class="boost-impact">
           <strong id="boost-equivalent">+1 boost</strong>
-          This will raise petition #${p.id} by 1 position in the feed.
+          <span id="boost-desc">This will raise petition #${p.id} by 1 position in the feed.</span>
         </div>
-
-        <button class="button button-red button-full" id="confirm-boost-btn" style="margin-bottom:12px">
-          Confirm Boost
-        </button>
-        <button class="button button-outline button-full" id="cancel-boost-btn">
-          Cancel
-        </button>
+        <button class="button button-red button-full" id="confirm-boost-btn" style="margin-bottom:12px">Confirm Boost</button>
+        <button class="button button-outline button-full" id="cancel-boost-btn">Cancel</button>
       </div>
     `;
 
-    // Preset buttons
     content.querySelectorAll('.boost-preset').forEach(btn => {
       btn.addEventListener('click', () => {
-        const input = document.getElementById('boost-amount');
-        input.value = btn.dataset.amount;
+        document.getElementById('boost-amount').value = btn.dataset.amount;
         updateBoostImpact();
       });
     });
@@ -250,8 +240,7 @@
       const amount = parseInt(document.getElementById('boost-amount').value) || 0;
       const equiv = Math.ceil(amount / 10);
       document.getElementById('boost-equivalent').textContent = `+${equiv} boost${equiv !== 1 ? 's' : ''}`;
-      document.getElementById('boost-impact').querySelector('p, div') ?
-        (document.getElementById('boost-impact').lastChild.textContent = `This will raise petition #${p.id} by ${equiv} position${equiv !== 1 ? 's' : ''} in the feed.`) : null;
+      document.getElementById('boost-desc').textContent = `This will raise petition #${p.id} by ${equiv} position${equiv !== 1 ? 's' : ''} in the feed.`;
     }
 
     document.getElementById('boost-amount').addEventListener('input', updateBoostImpact);
@@ -265,7 +254,6 @@
       }
       if (boostPetition(id, amount)) {
         closeBoostModal();
-        // Refresh the UI
         renderFeaturedPetition();
         renderPetitionGrid();
         updateHeaderStats();
@@ -274,7 +262,6 @@
     });
 
     document.getElementById('cancel-boost-btn').addEventListener('click', closeBoostModal);
-
     modal.hidden = false;
   }
 
@@ -290,7 +277,6 @@
   function showBoostConfirmation(id, amount) {
     const modal = document.getElementById('boost-modal');
     const content = document.getElementById('boost-modal-content');
-    const p = PETITIONS.find(p => p.id === id);
     const equiv = Math.ceil(amount / 10);
 
     content.innerHTML = `
@@ -301,9 +287,7 @@
           You have contributed <strong style="color:var(--gold)">${amount.toLocaleString()} $KIM</strong> to the repatriation effort.
           Petition #${id} has received <strong style="color:var(--red)">+${equiv} boost${equiv !== 1 ? 's' : ''}</strong>.
         </p>
-        <p style="font-size:14px;color:var(--muted)">
-          The Ministry thanks you for your service to the Republic.
-        </p>
+        <p style="font-size:14px;color:var(--muted)">The Ministry thanks you for your service to the Republic.</p>
         <button class="button button-outline" onclick="document.getElementById('boost-modal').hidden=true" style="margin-top:24px">Close</button>
       </div>
     `;
@@ -321,11 +305,8 @@
 
   form.addEventListener('submit', e => {
     e.preventDefault();
-
-    // Clear previous errors
     form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
 
-    // Collect data
     const data = {
       name: form.querySelector('#form-name').value.trim(),
       event: form.querySelector('#form-event').value.trim(),
@@ -334,24 +315,21 @@
       wallet: form.querySelector('#form-wallet').value.trim(),
       story: form.querySelector('#form-story').value.trim(),
       evidence: form.querySelector('#form-evidence').value.trim(),
-      kimAddress: form.querySelector('#form-kim-address').value.trim(),
+      kimAddress: form.querySelector('#form-kim-address') ? form.querySelector('#form-kim-address').value.trim() : '',
       amountUsd: form.querySelector('#form-amount').value.trim(),
     };
 
-    // Validate
     let valid = true;
     if (!data.name) { showError('form-name', 'Display name is required.'); valid = false; }
     if (!data.event) { showError('form-event', 'Event name is required.'); valid = false; }
     if (!data.amount) { showError('form-amount', 'Amount lost is required.'); valid = false; }
     if (!data.chain) { showError('form-chain', 'Please select a chain.'); valid = false; }
     if (!data.story || data.story.length < 20) {
-      showError('form-story', 'Please write at least 20 characters describing your situation.');
-      valid = false;
+      showError('form-story', 'Please write at least 20 characters describing your situation.'); valid = false;
     }
 
     if (!valid) return;
 
-    // Submit
     const caseId = addPetition(data);
     form.reset();
     storyCount.textContent = '0';
@@ -422,11 +400,9 @@
       <div class="wallet-actions">
         <button class="button button-outline" id="refill-btn">Get More $KIM (+5,000)</button>
       </div>
-      <div style="padding:0 40px 32px;text-align:center">
-        <p style="font-size:12px;color:var(--muted-2);line-height:1.6">
-          This is a demo wallet for testing. $KIM tokens have no real value.
-          Boosting petitions helps signal community support — nothing more.
-        </p>
+      <div class="wallet-note">
+        <p>This is a demo wallet for testing. $KIM tokens have no real value.
+        Boosting petitions helps signal community support — nothing more.</p>
       </div>
     `;
 
@@ -459,7 +435,7 @@
     if (e.target === e.currentTarget) document.getElementById('confirm-modal').hidden = true;
   });
 
-  // ── Escape key closes modals ─────────────────────
+  // ── Escape key ───────────────────────────────────
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     document.getElementById('petition-modal').hidden = true;
@@ -468,21 +444,18 @@
     document.getElementById('wallet-modal').hidden = true;
   });
 
-  // ── Check for petition param in URL ─────────────
+  // ── URL petition param ───────────────────────────
   const urlParams = new URLSearchParams(window.location.search);
   const petitionParam = urlParams.get('petition');
   if (petitionParam) {
     setTimeout(() => openPetitionModal(petitionParam), 500);
   }
 
-  // ── Smooth scroll for anchor links ──────────────
+  // ── Smooth scroll ────────────────────────────────
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
 

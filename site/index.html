@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;450;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,5 61,35 95,35 68,55 79,90 50,70 21,90 32,55 5,35 39,35' fill='%23c41e3a'/></svg>">
 </head>
 <body>
@@ -28,12 +28,12 @@
     <div class="header-center">
       <div class="live-badge">
         <span class="live-dot"></span>
-        <span>LIVE</span>
+        <span>LIVE BROADCAST</span>
       </div>
       <div class="header-stats">
-        <span><strong id="total-petitions">0</strong> Petitions Filed</span>
-        <span class="sep">|</span>
-        <span><strong>$<span id="total-amount">0</span></strong> In Claims</span>
+        <span><strong id="total-petitions">0</strong> Petitions</span>
+        <span class="sep">·</span>
+        <span><strong>$<span id="total-amount">0</span></strong> Claimed</span>
       </div>
     </div>
     <div class="header-right">
@@ -53,48 +53,52 @@
     STATE TELEVISION
   </div>
   <div class="broadcast-ticker" id="broadcast-ticker">
-    <div class="ticker-track" id="ticker-track">
-      <!-- Filled by JS -->
-    </div>
+    <div class="ticker-track" id="ticker-track"></div>
   </div>
   <button class="broadcast-pause" id="broadcast-pause" aria-label="Pause ticker">❚❚</button>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="scanlines"></div>
-  <div class="hero-content">
-    <div class="hero-emblem">
-      <svg viewBox="0 0 200 200" width="120" height="120">
-        <polygon points="100,10 118,70 182,70 130,105 148,165 100,130 52,165 70,105 18,70 82,70" fill="none" stroke="#c41e3a" stroke-width="3"/>
-        <polygon points="100,30 114,75 162,75 124,105 138,150 100,125 62,150 76,105 38,75 86,75" fill="#c41e3a"/>
-        <circle cx="100" cy="100" r="30" fill="#111111"/>
-        <text x="100" y="108" text-anchor="middle" fill="#f5f0e1" font-size="24" font-family="serif">$KIM</text>
-      </svg>
-    </div>
-    <div class="hero-eyebrow">
-      <span class="eyebrow-star">★</span>
-      THE MINISTRY OF REPATRIATION IS NOW IN SESSION
-      <span class="eyebrow-star">★</span>
-    </div>
-    <h1 class="hero-title">The Democratic<br>People's Decentralized<br><em>Exchange</em></h1>
-    <p class="hero-subtitle">"The People's Republic generously permits your assets to return home."</p>
-    <div class="hero-actions">
-      <a href="#petitions" class="button button-red button-lg">View Petitions</a>
-      <a href="#submit" class="button button-outline button-lg">Submit Your Claim</a>
-    </div>
-    <div class="hero-stamps">
-      <span class="stamp stamp-red">OFFICIAL</span>
-      <span class="stamp stamp-gold">VERIFIED BY THE MINISTRY</span>
-    </div>
+  <!-- Background image -->
+  <div class="hero-bg-img">
+    <img src="assets/kim-control-room.png" alt="" aria-hidden="true" class="hero-bg-photo">
+    <div class="hero-overlay"></div>
   </div>
-  <div class="hero-propaganda">
-    <div class="propaganda-card">
-      <div class="prop-header">★ THE SUPREME PEOPLE'S BULLETIN ★</div>
-      <div class="prop-content">
-        <p>"The great leader observes that the victims of capitalist exchange failures shall be granted an audience with the Ministry."</p>
-        <div class="prop-footer">— State Television, Pyongyang Central</div>
+
+  <div class="hero-content">
+    <!-- Left: character + text -->
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-star">★</span>
+        THE MINISTRY OF REPATRIATION IS NOW IN SESSION
+        <span class="eyebrow-star">★</span>
+      </div>
+      <h1 class="hero-title">
+        The Democratic<br>People's<br>Decentralized<br><em>Exchange</em>
+      </h1>
+      <p class="hero-subtitle">
+        "The People's Republic generously permits<br>your assets to return home."
+      </p>
+      <div class="hero-actions">
+        <a href="#petitions" class="button button-red button-lg">View Petitions</a>
+        <a href="#submit" class="button button-ghost button-lg">Submit Your Claim</a>
+      </div>
+      <div class="hero-stamps">
+        <span class="stamp stamp-red">OFFICIAL</span>
+        <span class="stamp stamp-gold">VERIFIED BY THE MINISTRY</span>
+      </div>
+    </div>
+
+    <!-- Right: character portrait -->
+    <div class="hero-right">
+      <div class="hero-character">
+        <img src="assets/kim-hero-2.png" alt="The Supreme People's Broadcaster" class="character-portrait">
+        <div class="character-frame"></div>
+        <div class="character-label">
+          <span class="char-rank">THE SUPREME PEOPLE'S BROADCASTER</span>
+          <span class="char-station">Pyongyang Central Television</span>
+        </div>
       </div>
     </div>
   </div>
@@ -105,20 +109,15 @@
   <div class="section-inner">
     <div class="section-header">
       <h2 class="section-title">The Ministry of Repatriation</h2>
-      <p class="section-subtitle">Verified petitions from victims of capitalist exchange failures. Boost those most deserving of the Republic's attention.</p>
+      <p class="section-subtitle">Verified petitions from victims of capitalist exchange failures. Boost the most deserving claims with $KIM.</p>
     </div>
 
     <!-- Featured Petition -->
-    <div class="featured-petition" id="featured-petition" style="display:none;">
-      <!-- Filled by JS -->
-    </div>
+    <div class="featured-petition" id="featured-petition" style="display:none;"></div>
 
     <!-- Petition Grid -->
-    <div class="petition-grid" id="petition-grid">
-      <!-- Filled by JS -->
-    </div>
+    <div class="petition-grid" id="petition-grid"></div>
 
-    <!-- Load More -->
     <div class="load-more" id="load-more" style="display:none;">
       <button class="button button-outline" id="load-more-btn">Load More Petitions</button>
     </div>
@@ -137,20 +136,16 @@
       <div class="submit-sidebar">
         <div class="sidebar-info">
           <div class="info-box">
-            <h3>What is the Ministry of Repatriation?</h3>
-            <p>A public petition board where victims of crypto exploits can submit recovery requests. The community can boost petitions by spending $KIM, raising their visibility.</p>
+            <h3>What is the Ministry?</h3>
+            <p>A public petition board where victims of crypto exploits can submit recovery requests. Community boosts raise visibility.</p>
           </div>
           <div class="info-box">
             <h3>Is this legitimate?</h3>
-            <p>Recovery bounty programs have real precedent. Bybit (2025) offered up to 10% of recovered funds. Cetus (2025) proposed multimillion-dollar settlements. KimSwap is a meme-styled version of this.</p>
+            <p>Recovery bounty programs have real precedent. Bybit (2025) offered up to 10% of recovered funds. Cetus (2025) proposed multimillion-dollar settlements.</p>
           </div>
           <div class="info-box">
             <h3>Who can submit?</h3>
             <p>Any verified victim of a crypto hack, exploit, or theft. You maintain ownership of your claim. We are the messenger, not the arbiter.</p>
-          </div>
-          <div class="info-box">
-            <h3>What happens after I submit?</h3>
-            <p>Your petition enters review. Once verified, it goes live. Community boosts raise its profile. If a recovery is made, bounty terms are negotiated separately.</p>
           </div>
         </div>
       </div>
@@ -171,7 +166,6 @@
           <div class="form-group">
             <label for="form-event">Hack / Exploit Event <span class="required">*</span></label>
             <input type="text" id="form-event" name="event" placeholder="e.g. Bybit February 2025, Lazarus Group Oct 2026" maxlength="100" required>
-            <span class="field-hint">The specific incident that caused your loss.</span>
           </div>
 
           <div class="form-row">
@@ -209,13 +203,6 @@
           <div class="form-group">
             <label for="form-evidence">Evidence Link</label>
             <input type="url" id="form-evidence" name="evidence" placeholder="https://...">
-            <span class="field-hint">Etherscan tx, police report, or other documentation. Optional.</span>
-          </div>
-
-          <div class="form-group">
-            <label for="form-kim-address">$KIM Address (for rewards)</label>
-            <input type="text" id="form-kim-address" name="kimAddress" placeholder="For bounty delivery if resolved">
-            <span class="field-hint">Optional. Leave blank if you don't have one yet.</span>
           </div>
 
           <div class="form-disclaimer">
@@ -247,7 +234,6 @@
     <div class="footer-links">
       <span>$KIM — Memecoin — Satire</span>
       <span>Not financial advice. Not a regulated service.</span>
-      <span>Recovery bounty programs have real legal precedent. Proceed with caution.</span>
     </div>
     <div class="footer-bottom">
       <span>© <span id="year"></span> KimSwap. A satirical project. All claims are community-submitted.</span>
@@ -255,42 +241,31 @@
   </div>
 </footer>
 
-<!-- PETITION DETAIL MODAL -->
+<!-- MODALS -->
 <div class="modal-overlay" id="petition-modal" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" role="dialog" aria-modal="true">
     <button class="modal-close" id="modal-close" aria-label="Close">×</button>
-    <div class="modal-content" id="modal-content">
-      <!-- Filled by JS -->
-    </div>
+    <div class="modal-content" id="modal-content"></div>
   </div>
 </div>
 
-<!-- BOOST MODAL -->
 <div class="modal-overlay" id="boost-modal" hidden>
   <div class="modal modal-boost" role="dialog" aria-modal="true">
     <button class="modal-close" id="boost-modal-close" aria-label="Close">×</button>
-    <div class="modal-content" id="boost-modal-content">
-      <!-- Filled by JS -->
-    </div>
+    <div class="modal-content" id="boost-modal-content"></div>
   </div>
 </div>
 
-<!-- SUBMISSION CONFIRMATION MODAL -->
 <div class="modal-overlay" id="confirm-modal" hidden>
   <div class="modal modal-confirm" role="dialog" aria-modal="true">
-    <div class="confirm-content" id="confirm-content">
-      <!-- Filled by JS -->
-    </div>
+    <div class="confirm-content" id="confirm-content"></div>
   </div>
 </div>
 
-<!-- WALLET MODAL -->
 <div class="modal-overlay" id="wallet-modal" hidden>
   <div class="modal modal-wallet" role="dialog" aria-modal="true">
     <button class="modal-close" id="wallet-modal-close" aria-label="Close">×</button>
-    <div class="modal-content" id="wallet-modal-content">
-      <!-- Filled by JS -->
-    </div>
+    <div class="modal-content" id="wallet-modal-content"></div>
   </div>
 </div>
 
